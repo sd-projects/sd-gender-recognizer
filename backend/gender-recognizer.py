@@ -9,7 +9,6 @@ from mutagen.wave import WAVE
 import audioread
 from pathlib import Path
 
-
 def check(filename):
     if filename[-3:]!="wav":
         mb.showinfo("ERROR", "Invalid file type     \nOpen an WAV file      ")
