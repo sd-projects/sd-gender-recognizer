@@ -4,10 +4,7 @@ import tkinter as tk
 import tkinter.filedialog as fd
 from tkinter import messagebox as mb
 from tkinter import ttk
-import mutagen
-from mutagen.wave import WAVE
-import audioread
-from pathlib import Path
+
 
 def check(filename):
     if filename[-3:]!="wav":
