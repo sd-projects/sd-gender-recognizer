@@ -9,3 +9,4 @@
 *.png
 **/.idea/*
 *.pdf
+**/.venv/*
