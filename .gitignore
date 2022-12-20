@@ -7,6 +7,8 @@
 *.xlsx
 *.reapeaks
 *.png
-**/.idea/*
 *.pdf
+*.ui
+**/.idea/*
 **/.venv/*
+**/__pycache__
