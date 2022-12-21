@@ -2,6 +2,7 @@ from PySide6.QtCore import QCoreApplication, QMetaObject, QSize, Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QLabel, QPushButton, QSizePolicy, QVBoxLayout, QWidget
 
+
 class Ui_DlgAlgLayout(object):
     def setupUi(self, DlgAlgLayout):
         if not DlgAlgLayout.objectName():
