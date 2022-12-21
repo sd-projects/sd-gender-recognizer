@@ -1,9 +1,10 @@
 import tkinter
 import librosa
 import tkinter as tk
+from tkinter import ttk
 import tkinter.filedialog as fd
 from tkinter import messagebox as mb
-from tkinter import ttk
+
 
 
 def check(filename):
@@ -44,7 +45,7 @@ def obrabotka(filename):
     k = 0
     for i in range(0, razb, 100):
 
-        zero_crossings = librosa.zero_crossings(y[i:i + 100], pad=False)
+        zero_crossings = librosa.zero_crossings(y[i:i  + 100], pad=False)
         if sum(zero_crossings) >= 20:
             k += 1
         elif sum(zero_crossings) < 9:
@@ -55,7 +56,7 @@ def obrabotka(filename):
     if k > 0:
         return "woman"
     elif k == 0:
-        return"woman"
+        return"woman" 
     else:
         return "man"
 
