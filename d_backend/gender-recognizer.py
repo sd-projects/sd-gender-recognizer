@@ -6,12 +6,13 @@ from tkinter import ttk
 import tkinter.filedialog as fd
 from tkinter import messagebox as mb
 import os
+import pandas as pd
 
 def start():
     window = tk.Tk()
     window.title("Определение голоса")
     window["bg"] = "lightblue2"
-    window.geometry('960x540+0+0')
+    window.geometry('660x430+0+0')
 
     btn_file = tk.Button(window, text="Выбрать файл",
                          command=choose_file, bg="MediumOrchid1",
@@ -57,18 +58,23 @@ def choose_file():
 def obrabotka(filename):
     audio_data = filename
     y, sr = librosa.load(audio_data)
-    print(y.shape)
-
     y_harmonic, y_percussive = librosa.effects.hpss(y)
     tempo, beat_frames = librosa.beat.beat_track(y=y_percussive, sr=sr)
-    mfcc = librosa.feature.mfcc(y=y, sr=sr, hop_length=8192, n_mfcc=12)
-    s = 0
-    for i in mfcc:
-        s += sum(i)
+    mfccs = librosa.feature.mfcc(y=y_harmonic, sr=sr, n_mfcc=20)
+    X = librosa.stft(y)
+    Xdb = librosa.amplitude_to_db(abs(X))
+    print(np.sum(X))
+    print(np.sum(Xdb))
+    print(np.mean(X))
+    print(np.mean(Xdb))
+    print(np.var(X))
+    print(np.var(Xdb))
+    print(np.median(X))
+    print(np.median(Xdb))
+    df =pd.DataFrame({})
     dlina_razb = 500
     razb = len(y) // dlina_razb
     k = 0
-    print(np.mean(librosa.zero_crossings(y, pad=False)))
     for i in range(0, razb, dlina_razb):
 
         zero_crossings = librosa.zero_crossings(y[i:i + dlina_razb], pad=False)

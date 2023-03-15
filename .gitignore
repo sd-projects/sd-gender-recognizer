@@ -4,7 +4,6 @@
 *.TextGrid
 *.TextGrid_
 *. TextGrid
-*.xlsx
 *.reapeaks
 *.png
 *.pdf
@@ -12,3 +11,4 @@
 **/.idea/*
 **/.venv/*
 **/__pycache__
+d_backend/Material for tests/Split/Лист Microsoft Excel.xlsx
