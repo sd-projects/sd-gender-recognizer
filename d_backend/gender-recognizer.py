@@ -6,8 +6,10 @@ from tkinter import ttk
 import tkinter.filedialog as fd
 from tkinter import messagebox as mb
 import os
-import pandas as pd
 
+
+df = []
+title = []
 def start():
     window = tk.Tk()
     window.title("Определение голоса")
@@ -63,19 +65,10 @@ def obrabotka(filename):
     mfccs = librosa.feature.mfcc(y=y_harmonic, sr=sr, n_mfcc=20)
     X = librosa.stft(y)
     Xdb = librosa.amplitude_to_db(abs(X))
-    print(np.sum(X))
-    print(np.sum(Xdb))
-    print(np.mean(X))
-    print(np.mean(Xdb))
-    print(np.var(X))
-    print(np.var(Xdb))
-    print(np.median(X))
-    print(np.median(Xdb))
-    df =pd.DataFrame({})
     dlina_razb = 500
     razb = len(y) // dlina_razb
     k = 0
-    for i in range(0, razb, dlina_razb):
+    for i in range(0, len(y), dlina_razb):
 
         zero_crossings = librosa.zero_crossings(y[i:i + dlina_razb], pad=False)
         if sum(zero_crossings) >= 20:
