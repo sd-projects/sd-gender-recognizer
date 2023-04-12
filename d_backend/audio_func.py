@@ -1,0 +1,21 @@
+from os import path
+
+from pydub import AudioSegment
+
+
+# Для использования этой функции нужна программа "ffmpeg.exe"
+# Так же её нужно добавить в "Advanced system settings" в "Environment Variables" в "System Variables" в "Path"
+# В фукцию подается путь аудиофайла в формате mp3, например: "G:\sd-gender-recognizer\file.mp3"
+def wav_convert(input_file):
+    # Проверяем расширение конвертируемого файла
+    if input_file[-4:] == ".mp3":
+        # Задаем путь финального файла
+        output_file = input_file[:-4] + ".wav"
+        try:
+            # Пробуем провести конвертацию из обычного mp3 файла
+            sound = AudioSegment.from_file(input_file, "mp3")
+        except:
+            # При неудаче пробуем провести конвертацию из mp3 файла, формат контейнера которого - mpeg4
+            sound = AudioSegment.from_file(input_file, format="mp4")
+        # Сохраняем финальный файл
+        sound.export(output_file, format="wav")
