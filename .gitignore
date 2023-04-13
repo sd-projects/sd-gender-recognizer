@@ -12,3 +12,4 @@
 **/.venv/*
 **/__pycache__
 d_backend/Material for tests/Split/Лист Microsoft Excel.xlsx
+*.mp3
