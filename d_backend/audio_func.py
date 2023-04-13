@@ -1,3 +1,4 @@
+import os
 from os import path
 
 from pydub import AudioSegment
@@ -19,3 +20,8 @@ def wav_convert(input_file):
             sound = AudioSegment.from_file(input_file, format="mp4")
         # Сохраняем финальный файл
         sound.export(output_file, format="wav")
+
+
+# Перебор всех файлов из папки
+for i in [i for i in os.listdir() if i[-4:] == ".mp3" or i[-4:] == "wav"]:
+    wav_convert(i)
