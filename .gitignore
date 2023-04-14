@@ -7,7 +7,6 @@
 *.reapeaks
 *.png
 *.pdf
-*.ui
 **/.idea/*
 **/.venv/*
 **/__pycache__

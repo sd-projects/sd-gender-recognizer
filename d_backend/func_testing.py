@@ -7,7 +7,7 @@ import tkinter.filedialog as fd
 from tkinter import messagebox as mb
 import os
 
-def sound_info(filname):
+def sound_info(filename):
     audio_data = filename
     y, sr = librosa.load(audio_data)
     y_harmonic, y_percussive = librosa.effects.hpss(y)
