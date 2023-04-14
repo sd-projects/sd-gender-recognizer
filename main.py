@@ -1,6 +1,10 @@
-from layout_main import Ui_MainRecognizerWindow
+from layouts.layout_main import Ui_MainRecognizerWindow
 
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QApplication
+# Потом нужно заменить на натоящую функцию
+from time import sleep
+from archive.s_gui.test_alg import gender
+
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QApplication, QMessageBox
 
 import sys
 
@@ -18,7 +22,7 @@ class MainRecognizerWindow(QMainWindow):
 
         self.ui.button_path_choose.clicked.connect(self.evt_btn_path_ch)
 
-        self.ui.button_file_choose.clicked.connect(self.evt_btn_anlz)
+        self.ui.button_analyze.clicked.connect(self.evt_btn_anlz)
 
     def evt_btn_file_ch(self):
         res = QFileDialog.getOpenFileNames(self, "Choose file(-s)", "/Users/", "Audio File (*.mp3;*.wav)")[0]
@@ -51,8 +55,17 @@ class MainRecognizerWindow(QMainWindow):
                                                   res)
 
     def evt_btn_anlz(self):
-        if self.file_ch_res is not None and self.path_ch_res is not None:
-            
+        if self.file_ch_res is None or self.path_ch_res is None:
+            QMessageBox.critical(self, "Error", "Выберите аудиофайлы для анализа и путь сохранения резутата")
+        else:
+            n = len(self.file_ch_res)
+            res = ["" for i in range(n)]
+            for i in range(n):
+                res[i] = gender(self.file_ch_res[i]) + self.file_ch_res[i] + "\n"
+            with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
+                for i in range(n):
+                    file.write(res[i])
+            QMessageBox.information(self, "Information", "Анализ аудиозаписей начался, дождитесь появления результатов")
 
 
 app = QApplication(sys.argv)
