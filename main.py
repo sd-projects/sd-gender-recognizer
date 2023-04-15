@@ -1,7 +1,7 @@
 from layouts.layout_main import Ui_MainRecognizerWindow
 
 # Потом нужно заменить на натоящую функцию
-from archive.s_gui.test_alg import gender
+# from archive.s_gui.test_alg import gender
 
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QApplication, QMessageBox
 
