@@ -1,5 +1,4 @@
 import os
-from os import path
 import librosa
 from pydub import AudioSegment
 import numpy as np
@@ -26,15 +25,16 @@ def wav_convert(input_file):
     return output_file, remv
 
 
-def globalresult(file, remv):
+def globalresult(file):
+    file, remv = wav_convert(file)
     y, sr = librosa.load(file)
     result = mfccs_criterion(y, sr) + y_percussive_criterion(y) + Xdb_criterion(y)
     if remv == 1:
         os.remove(file)
     if result < 0:
-        gender = 0
+        gender = "Female - "
     else:
-        gender = 1
+        gender = "Male   - "
     return gender
 
 
@@ -68,6 +68,3 @@ def Xdb_criterion(y):
     else:
         result = -1
     return result
-
-
-print(globalresult(wav_convert("woman_alya01.wav")))

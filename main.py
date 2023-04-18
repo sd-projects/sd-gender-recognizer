@@ -1,7 +1,6 @@
 from layouts.layout_main import Ui_MainRecognizerWindow
 
-# Потом нужно заменить на натоящую функцию
-# from archive.s_gui.test_alg import gender
+from scripts.audio_func import globalresult
 
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QApplication, QMessageBox
 
@@ -60,7 +59,11 @@ class MainRecognizerWindow(QMainWindow):
             n = len(self.file_ch_res)
             res = ["" for i in range(n)]
             for i in range(n):
-                res[i] = gender(self.file_ch_res[i]) + self.file_ch_res[i] + "\n"
+                p_res = globalresult(self.file_ch_res[i])
+                if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
+                    res[i] = p_res +self.file_ch_res[i] + "\n"
+                else:
+                    res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
             with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
                 for i in range(n):
                     file.write(res[i])
@@ -72,4 +75,4 @@ window_1 = MainRecognizerWindow()
 
 window_1.show()
 
-app.exec_()
+app.exec()
