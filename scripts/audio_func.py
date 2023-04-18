@@ -9,7 +9,7 @@ import numpy as np
 # В фукцию подается путь аудиофайла в формате mp3, например: "G:\sd-gender-recognizer\file.mp3"
 def wav_convert(input_file):
     remv = 0
-    # Проверяем расширение конвертируемого файла\
+    # Проверяем расширение конвертируемого файла
     output_file = input_file[:-4] + ".wav"
     if input_file[-4:] == ".mp3":
         # Задаем путь финального файла

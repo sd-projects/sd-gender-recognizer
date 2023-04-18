@@ -64,10 +64,12 @@ class MainRecognizerWindow(QMainWindow):
                     res[i] = p_res + self.file_ch_res[i] + "\n"
                 else:
                     res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
+
             with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
                 for i in range(n):
                     file.write(res[i])
-            QMessageBox.information(self, "Information", "Анализ аудиозаписей начался, дождитесь появления результатов")
+            QMessageBox.information(self, "Completed",
+                                    "Анализ аудиозаписей закончился, данные сохранены в файл 'results.txt'")
 
 
 app = QApplication(sys.argv)
