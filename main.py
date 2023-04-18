@@ -61,7 +61,7 @@ class MainRecognizerWindow(QMainWindow):
             for i in range(n):
                 p_res = globalresult(self.file_ch_res[i])
                 if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
-                    res[i] = p_res +self.file_ch_res[i] + "\n"
+                    res[i] = p_res + self.file_ch_res[i] + "\n"
                 else:
                     res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
             with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
