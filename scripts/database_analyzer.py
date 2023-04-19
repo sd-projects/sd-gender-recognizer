@@ -4,39 +4,49 @@ from audio_func import global_result
 
 
 def data_analyzer(p1, p2, p3, i1):
-    m_err = 0
-    f_err = 0
-
-    analyzer("G:/ruls_data/train/audio/9014/11018/", "f", p1, p2, p3, i1, 1)
-    # G:/ruls_data/train/audio/9014/11018 f1 1271
-    # G:\ruls_data\train\audio\9014\8641 f1 1188
-    # G:\ruls_data\test\audio\2671\2145 f2 443
-    # G:\ruls_data\test\audio\3056\2145 f3 236
-    # G:\ruls_data\dev\audio\5397\2145 f4 1400
-    # G:\ruls_data\train\audio\8086\7771 m1 3092
-    # G:\ruls_data\train\audio\8086\11365 m1 1233
-    # G:\ruls_data\train\audio\8169\10422 m2 2180
-    # G:\ruls_data\train\audio\8169\12256 m2 2966
-    # G:\ruls_data\test\audio\2826\2145 m3 147
-    # G:\ruls_data\test\audio\4471\2145 m4 181
-    # G:\ruls_data\test\audio\4372\2145 m5 169
+    res = [f"Coefficients: {p1}, {p2}, {p3}",
+           analyzer("G:/ruls_data/train/audio/9014/11018/", "f", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/train/audio/9014/8641/", "f", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/test/audio/2671/2145/", "f", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/test/audio/3056/2145/", "f", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/dev/audio/5397/2145/", "f", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/train/audio/8086/7771/", "m", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/train/audio/8169/12256/", "m", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/test/audio/2826/2145/", "m", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/test/audio/4471/2145/", "m", p1, p2, p3, i1, 1),
+           analyzer("G:/ruls_data/test/audio/4372/2145/", "m", p1, p2, p3, i1, 1)]
 
 
 def analyzer(path, speaker_gender, p1, p2, p3, i1, i2):
     files = listdir(path=path)
 
     n = len(files)
-    res = ["" for i in range(n)]
+    m_errs = [0 for _ in range(3)]
+    f_errs = [0 for _ in range(3)]
 
     for i in range(n):
-        p_res = global_result(self.file_ch_res[i], p1, p2, p3)
+        r1, r2, r3 = global_result(path + str(files[i]), p1, p2, p3)
 
-        if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
-            res[i] = p_res + self.file_ch_res[i] + "\n"
-        else:
-            res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
+        print(f"Progress ({i1 + 1}/11)({i2}/10)({i + 1}/{n})")
 
-        print(str(i + 1) + "/" + str(n))
+        if speaker_gender == "m":
+            if r1 == -1:
+                m_errs[0] += 1
+            if r2 == -1:
+                m_errs[1] += 1
+            if r3 == -1:
+                m_errs[2] += 1
+        elif speaker_gender == "f":
+            if r1 == 1:
+                f_errs[0] += 1
+            if r2 == 1:
+                f_errs[1] += 1
+            if r3 == 1:
+                f_errs[2] += 1
+
+    errs = [m_errs, f_errs]
+
+    return errs
 
 
 mfccs_crit = 11
@@ -50,6 +60,6 @@ for i in range(11):
 
     data_analyzer(mfccs_crit, per_cri, Xdb_crit, i)
 
-# with open("results.txt", mode="w", encoding="utf-8") as file:
-#    for i in range(n):
-#        file.write(res[i])
+with open("results.txt", mode="w", encoding="utf-8") as file:
+    for i in range(n):
+       file.write(res[i])
