@@ -24,13 +24,16 @@ class MainRecognizerWindow(QMainWindow):
 
     def evt_btn_file_ch(self):
         res = QFileDialog.getOpenFileNames(self, "Choose file(-s)", "/Users/", "Audio File (*.mp3;*.wav)")[0]
+        
         if res != []:
             self.file_ch_res = res
             res_st = ""
+
             for i in range(len(res)):
                 if i > 0:
                     res_st += ", "
                 res_st += res[i][res[i].rfind("/") + 1:]
+
             if len(res_st) > 37:
                 self.ui.label_file_choose.setText(u"\u0412\u044b\u0431\u0440\u0430\u043d\u043d\u044b\u0435 "
                                                   u"\u0444\u0430\u0439\u043b\u044b: " + res_st[:37] + "...")
@@ -41,8 +44,10 @@ class MainRecognizerWindow(QMainWindow):
     def evt_btn_path_ch(self):
         res = ""
         res = QFileDialog.getExistingDirectory(self, "Choose path", "/Users/")
+
         if res != "":
             self.path_ch_res = res
+
             if len(res) > 42:
                 self.ui.label_path_choose.setText(u"\u041f\u0443\u0442\u044c "
                                                   u"\u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u044f: " +
@@ -58,16 +63,21 @@ class MainRecognizerWindow(QMainWindow):
         else:
             n = len(self.file_ch_res)
             res = ["" for i in range(n)]
+
             for i in range(n):
                 p_res = globalresult(self.file_ch_res[i])
+
                 if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
                     res[i] = p_res + self.file_ch_res[i] + "\n"
                 else:
                     res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
-                print(str(i + 1) + "/" + str(len(self.file_ch_res)))
+
+                print(str(i + 1) + "/" + str(n))
+
             with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
                 for i in range(n):
                     file.write(res[i])
+
             QMessageBox.information(self, "Completed",
                                     "Анализ аудиозаписей закончился, данные сохранены в файл 'results.txt'")
 
