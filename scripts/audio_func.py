@@ -29,7 +29,7 @@ def wav_convert(input_file):
 
 def global_result(file, p1, p2, p3):
     file, remv = wav_convert(file)
-    reduce_noise(file)
+    # reduce_noise(file)
     y, sr = librosa.load(file)
     r1, r2, r3 = mfccs_criterion(y, sr, p1), y_percussive_criterion(y, p2), Xdb_criterion(y, p3)
     if remv == 1:
