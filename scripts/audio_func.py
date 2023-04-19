@@ -2,6 +2,8 @@ import os
 import librosa
 from pydub import AudioSegment
 import numpy as np
+from scipy.io import wavfile
+import noisereduce as nr
 
 
 # Для использования этой функции нужна программа "ffmpeg.exe"
@@ -26,6 +28,7 @@ def wav_convert(input_file):
 
 
 def global_result(file, p1, p2, p3):
+    reduce_noise(file)
     file, remv = wav_convert(file)
     y, sr = librosa.load(file)
     r1, r2, r3 = mfccs_criterion(y, sr, p1), y_percussive_criterion(y, p2), Xdb_criterion(y, p3)
@@ -62,3 +65,9 @@ def Xdb_criterion(y, x):
     else:
         result = -1
     return result
+
+
+def reduce_noise(file):
+    rate, data = wavfile.read(file)
+    reduced_noise = nr.reduce_noise(y=data, sr=rate)
+    wavfile.write(file, rate, reduced_noise)
