@@ -1,6 +1,6 @@
 from layouts.layout_main import Ui_MainRecognizerWindow
 
-from scripts.audio_func import globalresult
+from scripts.audio_func import global_result
 
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QApplication, QMessageBox
 
@@ -65,7 +65,12 @@ class MainRecognizerWindow(QMainWindow):
             res = ["" for i in range(n)]
 
             for i in range(n):
-                p_res = globalresult(self.file_ch_res[i])
+                r1, r2, r3 = global_result(self.file_ch_res[i], 17, -3, 180)
+
+                if int(r1) + int(r2) + int(r3) > 0:
+                    p_res = "Male   - "
+                else:
+                    p_res = "Female - "
 
                 if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
                     res[i] = p_res + self.file_ch_res[i] + "\n"

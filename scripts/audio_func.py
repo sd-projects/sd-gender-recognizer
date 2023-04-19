@@ -25,45 +25,39 @@ def wav_convert(input_file):
     return output_file, remv
 
 
-def globalresult(file):
+def global_result(file, p1, p2, p3):
     file, remv = wav_convert(file)
     y, sr = librosa.load(file)
-    result = mfccs_criterion(y, sr) + y_percussive_criterion(y) + Xdb_criterion(y)
+    r1, r2, r3 = mfccs_criterion(y, sr, p1), y_percussive_criterion(y, p2), Xdb_criterion(y, p3)
     if remv == 1:
         os.remove(file)
-    if result < 0:
-        gender = "Female - "
-    else:
-        gender = "Male   - "
-    return gender
+    return r1, r2, r3
 
 
-def mfccs_criterion(y, sr):
+def mfccs_criterion(y, sr, x):
     y_harmonic = librosa.effects.hpss(y)[0]
     mfccs = librosa.feature.mfcc(y=y_harmonic, sr=sr, n_mfcc=13)
     result = np.mean([max(i) for i in mfccs])
-    result2 = max(mfccs[1])
-    result3 = max(mfccs[2])
-    if result > 17:
+    if result > x:
         result = 1
     else:
         result = -1
     return result
 
 
-def y_percussive_criterion(y):
+def y_percussive_criterion(y, x):
     y_percussive = round(np.mean(librosa.effects.hpss(y)[1]) * 10 ** 5, 2)
-    if y_percussive > -3:
+    if y_percussive > x:
         result = -1
     else:
         result = 1
     return result
 
 
-def Xdb_criterion(y):
+def Xdb_criterion(y, x):
     X = librosa.stft(y)
     Xdb = librosa.amplitude_to_db(abs(X))
-    if np.var(Xdb) > 180:
+    if np.var(Xdb) > x:
         result = 1
     else:
         result = -1
