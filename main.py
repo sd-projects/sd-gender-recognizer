@@ -64,7 +64,7 @@ class MainRecognizerWindow(QMainWindow):
                     res[i] = p_res + self.file_ch_res[i] + "\n"
                 else:
                     res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
-
+                print(str(i + 1) + "/" + str(len(self.file_ch_res)))
             with open(self.path_ch_res + "/results.txt", mode="w", encoding="utf-8") as file:
                 for i in range(n):
                     file.write(res[i])
