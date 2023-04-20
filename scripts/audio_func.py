@@ -2,11 +2,9 @@ import os
 import librosa
 from pydub import AudioSegment
 import numpy as np
-from scipy.io import wavfile
-import noisereduce as nr
 
 
-# Для использования этой функции нужна программа "ffmpeg.exe"
+# Для использования этой функции нужна утилита "ffmpeg.exe"
 # Так же её нужно добавить в "Advanced system settings" в "Environment Variables" в "System Variables" в "Path"
 # В фукцию подается путь аудиофайла в формате mp3, например: "G:\sd-gender-recognizer\file.mp3"
 def wav_convert(input_file):
@@ -28,46 +26,54 @@ def wav_convert(input_file):
 
 
 def global_result(file, p1, p2, p3):
-    file, remv = wav_convert(file)
-    # reduce_noise(file)
-    y, sr = librosa.load(file)
-    r1, r2, r3 = mfccs_criterion(y, sr, p1), y_percussive_criterion(y, p2), Xdb_criterion(y, p3)
-    if remv == 1:
-        os.remove(file)
+    k1, k2, k3 = half_result(file)
+
+    if k1 > p1:
+        r1 = 1
+    else:
+        r1 = -1
+
+    if k2 < p2:
+        r2 = 1
+    else:
+        r2 = -1
+
+    if k3 > p3:
+        r3 = 1
+    else:
+        r3 = -1
+
     return r1, r2, r3
 
 
-def mfccs_criterion(y, sr, x):
+def half_result(file):
+    file, remv = wav_convert(file)
+    y, sr = librosa.load(file)
+
+    k1, k2, k3 = mfccs_criterion(y, sr), y_percussive_criterion(y), xdb_criterion(y)
+
+    if remv == 1:
+        os.remove(file)
+
+    return k1, k2, k3
+
+
+def mfccs_criterion(y, sr):
     y_harmonic = librosa.effects.hpss(y)[0]
     mfccs = librosa.feature.mfcc(y=y_harmonic, sr=sr, n_mfcc=13)
     result = np.mean([max(i) for i in mfccs])
-    if result > x:
-        result = 1
-    else:
-        result = -1
+
     return result
 
 
-def y_percussive_criterion(y, x):
-    y_percussive = round(np.mean(librosa.effects.hpss(y)[1]) * 10 ** 5, 4)
-    if y_percussive > x:
-        result = -1
-    else:
-        result = 1
-    return result
+def y_percussive_criterion(y):
+    y_percussive = round(np.mean(librosa.effects.hpss(y)[1]) * 10 ** 5, 2)
+
+    return y_percussive
 
 
-def Xdb_criterion(y, x):
-    X = librosa.stft(y)
-    Xdb = librosa.amplitude_to_db(abs(X))
-    if np.var(Xdb) > x:
-        result = 1
-    else:
-        result = -1
-    return result
+def xdb_criterion(y):
+    x = librosa.stft(y)
+    xdb = librosa.amplitude_to_db(abs(x))
 
-
-def reduce_noise(file):
-    rate, data = wavfile.read(file)
-    reduced_noise = nr.reduce_noise(y=data, sr=rate)
-    wavfile.write(file, rate, reduced_noise)
+    return np.var(xdb)
