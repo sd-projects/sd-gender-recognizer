@@ -4,7 +4,6 @@ from audio_func import half_result
 
 
 def data_analyzer(data):
-
     for gender in range(len(data)):
         k1 = []
         k2 = []
@@ -34,7 +33,7 @@ def data_analyzer(data):
 
 
 def analyzer(k1, k2, k3):
-    fn_res = [[0 for _ in range(4)] for _ in range(2)]
+    fn_res = [["0" for _ in range(4)] for _ in range(2)]
     fl_res = [[[] for _ in range(3)] for _ in range(2)]
     num_of_voice = [6580, 4743]
 
@@ -44,39 +43,65 @@ def analyzer(k1, k2, k3):
                 fl_res[fl][cf] = anlz_file.read().split("\n")
 
         for voice in range(num_of_voice[fl]):
-            fn_res[fl][0]
-            fn_res[fl][1]
-            fn_res[fl][2]
+            if float(fl_res[fl][0][voice]) < k1 and fl == 0:
+                fn_res[fl][0] = str(int(fn_res[fl][0]) + 1)
+            elif float(fl_res[fl][0][voice]) > k1 and fl == 1:
+                fn_res[fl][0] = str(int(fn_res[fl][0]) + 1)
 
+            if float(fl_res[fl][1][voice]) > k2 and fl == 0:
+                fn_res[fl][1] = str(int(fn_res[fl][1]) + 1)
+            elif float(fl_res[fl][1][voice]) < k2 and fl == 1:
+                fn_res[fl][1] = str(int(fn_res[fl][1]) + 1)
+
+            if float(fl_res[fl][2][voice]) < k3 and fl == 0:
+                fn_res[fl][2] = str(int(fn_res[fl][2]) + 1)
+            elif float(fl_res[fl][2][voice]) > k3 and fl == 1:
+                fn_res[fl][2] = str(int(fn_res[fl][2]) + 1)
+
+            if fl == 0 and ((float(fl_res[fl][0][voice]) < k1 and float(fl_res[fl][1][voice]) > k2) or
+                            (float(fl_res[fl][1][voice]) > k2 and float(fl_res[fl][2][voice]) < k3) or
+                            (float(fl_res[fl][0][voice]) < k1 and float(fl_res[fl][2][voice]) < k3)):
+                fn_res[fl][3] = str(int(fn_res[fl][3]) + 1)
+            if fl == 1 and ((float(fl_res[fl][0][voice]) < k1 and float(fl_res[fl][1][voice]) < k2) or
+                            (float(fl_res[fl][1][voice]) < k2 and float(fl_res[fl][2][voice]) < k3) or
+                            (float(fl_res[fl][0][voice]) < k1 and float(fl_res[fl][2][voice]) < k3)):
+                fn_res[fl][3] = str(int(fn_res[fl][3]) + 1)
+
+    fn_res[0].append("\n")
+    fn_res[1].append("\n")
+
+    for i in range(4):
+        fn_res[0][i] += " "
+        fn_res[1][i] += " "
 
     return fn_res[0], fn_res[1]
 
 
 analyze_files = True
 
-data = [["D:/ruls_data/train/audio/8086/7771/", "D:/ruls_data/train/audio/8169/12256/",
-         "D:/ruls_data/test/audio/2826/2145/", "D:/ruls_data/test/audio/4471/2145/",
-         "D:/ruls_data/test/audio/4372/2145/", "D:/ruls_data/my/male/"],
-        ["D:/ruls_data/train/audio/9014/11018/", "D:/ruls_data/train/audio/9014/8641/",
-         "D:/ruls_data/test/audio/2671/2145/", "D:/ruls_data/test/audio/3056/2145/",
-         "D:/ruls_data/dev/audio/5397/2145/", "D:/ruls_data/test/audio/5548/2145/",
-         "D:/ruls_data/test/audio/4091/2145/", "D:/ruls_data/my/female/"]]
+# data = [["D:/ruls_data/train/audio/8086/7771/", "D:/ruls_data/train/audio/8169/12256/",
+#          "D:/ruls_data/test/audio/2826/2145/", "D:/ruls_data/test/audio/4471/2145/",
+#          "D:/ruls_data/test/audio/4372/2145/", "D:/ruls_data/my/male/"],
+#         ["D:/ruls_data/train/audio/9014/11018/", "D:/ruls_data/train/audio/9014/8641/",
+#          "D:/ruls_data/test/audio/2671/2145/", "D:/ruls_data/test/audio/3056/2145/",
+#          "D:/ruls_data/dev/audio/5397/2145/", "D:/ruls_data/test/audio/5548/2145/",
+#          "D:/ruls_data/test/audio/4091/2145/", "D:/ruls_data/my/female/"]]
+
+data = [["D:/ruls_data/my/male/"], ["D:/ruls_data/my/female/"]]
 
 if analyze_files:
     data_analyzer(data)
 
+analyze_results = True
 
-analyze_results = False
-
-mfccs_crit = 6
+mfccs_crit = 7.2
 step_mfccs_crit = 0.1
 
-per_cri = -11
+per_cri = -0.25
 step_per_cri = 0.05
 
-xdb_crit = 158
-step_xdb_crit = 0.2
-
+xdb_crit = 160
+step_xdb_crit = 0.5
 
 if analyze_results:
     with open("fin_results.txt", mode="w", encoding="utf-8") as file:
@@ -96,4 +121,3 @@ if analyze_results:
             file.writelines(res[1])
 
             file.write("\n")
-
