@@ -34,6 +34,22 @@ def data_analyzer(data):
 
 
 def analyzer(k1, k2, k3):
+    fn_res = [[0 for _ in range(4)] for _ in range(2)]
+    fl_res = [[[] for _ in range(3)] for _ in range(2)]
+    num_of_voice = [6580, 4743]
+
+    for fl in range(2):
+        for cf in range(3):
+            with open(f"results_{fl + 1}_{cf + 1}.txt", mode="r", encoding="utf-8") as anlz_file:
+                fl_res[fl][cf] = anlz_file.read().split("\n")
+
+        for voice in range(num_of_voice[fl]):
+            fn_res[fl][0]
+            fn_res[fl][1]
+            fn_res[fl][2]
+
+
+    return fn_res[0], fn_res[1]
 
 
 analyze_files = True
@@ -53,18 +69,31 @@ if analyze_files:
 analyze_results = False
 
 mfccs_crit = 6
-step_mfccs_crit = 1
+step_mfccs_crit = 0.1
 
 per_cri = -11
-step_per_cri = 0.5
+step_per_cri = 0.05
 
 xdb_crit = 158
-step_xdb_crit = 2
+step_xdb_crit = 0.2
+
 
 if analyze_results:
-    for i in range(21):
-        mfccs_crit += step_mfccs_crit
-        per_cri += step_per_cri
-        xdb_crit += step_xdb_crit
+    with open("fin_results.txt", mode="w", encoding="utf-8") as file:
+        for i in range(211):
+            print(f"Progress: ({i + 1}/211)")
 
-        analyzer(mfccs_crit, per_cri, xdb_crit)
+            mfccs_crit += step_mfccs_crit
+            per_cri += step_per_cri
+            xdb_crit += step_xdb_crit
+
+            file.write(f"Coefficients: {mfccs_crit} {per_cri} {xdb_crit}\n")
+
+            res = [[] for _ in range(2)]
+            res[0], res[1] = analyzer(mfccs_crit, per_cri, xdb_crit)
+
+            file.writelines(res[0])
+            file.writelines(res[1])
+
+            file.write("\n")
+
