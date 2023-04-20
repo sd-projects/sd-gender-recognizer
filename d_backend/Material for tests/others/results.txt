@@ -1,2 +1,0 @@
-Female - D:/github/sd-gender-recognizer/d_backend/Material for tests/others/f_No_Name_02.mp3
-Female - D:/github/sd-gender-recognizer/d_backend/Material for tests/others/f_No_Name_03.mp3

@@ -65,7 +65,7 @@ class MainRecognizerWindow(QMainWindow):
             res = ["" for i in range(n)]
 
             for i in range(n):
-                r1, r2, r3 = global_result(self.file_ch_res[i], 17, -3, 180)
+                r1, r2, r3 = global_result(self.file_ch_res[i], 17, -3.021, 178.41533381607533)
 
                 if int(r1) + int(r2) + int(r3) > 0:
                     p_res = "Male   - "

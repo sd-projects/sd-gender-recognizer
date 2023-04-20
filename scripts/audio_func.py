@@ -49,7 +49,7 @@ def mfccs_criterion(y, sr, x):
 
 
 def y_percussive_criterion(y, x):
-    y_percussive = round(np.mean(librosa.effects.hpss(y)[1]) * 10 ** 5, 2)
+    y_percussive = round(np.mean(librosa.effects.hpss(y)[1]) * 10 ** 5, 4)
     if y_percussive > x:
         result = -1
     else:
