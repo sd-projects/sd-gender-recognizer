@@ -30,26 +30,12 @@ def cjyvert():
 
 
 # cjyvert()
-out = {}
-with open("k_out.txt", "r") as f:
-    for i in f.read().split("\n"):
-        l = i.split(" ")
-        print(l)
-        out[l[0]] = [float(l[1]), float(l[2]), float(l[3])]
-print(1)
+
 # with open("k_out.txt", "w") as f:
 #     for i in out:
 #         f.write(f"{i} {out[i][0]} {out[i][1]} {out[i][2]}\n")
 
-
-print(2)
-k1 = [i / 1000 for i in range(9000, 25000, 1)]
-k2 = [i / 1000 for i in range(-7000, 7000, 1)]
-k3 = [i / 1000 for i in range(170000, 190000, 1)]
-k11 = [randint(900, 2500) / 100 for i in range(501)]
-k12 = [randint(-500, 500) / 100 for i in range(501)]
-k13 = [randint(17000, 19000) / 100 for i in range(501)]
-print(3)
+big = []
 
 
 def func(x):
@@ -87,30 +73,60 @@ def func(x):
 
     return np.array(ot)
 
+out = {}
+with open("k_out.txt", "r") as f:
+    for i in f.read().split("\n"):
+        l = i.split(" ")
+        print(l)
+        out[l[0]] = [float(l[1]), float(l[2]), float(l[3])]
 
-hlp = []
-for i in combinations_with_replacement([i for i in range(500)], 3):
-    b = []
-    i0 = i[0]
-    i1 = i[1]
-    i2 = i[2]
-    b.append(k11[i0])
-    b.append(k12[i1])
-    b.append(k13[i2])
-    hlp.append(b)
-x = np.array(hlp)
-print(x)
-print(4)
-y = func(x)
-print(y)
-p = []
-a = []
-for i in y:
-    a.append(i[1])
-mn = min(a)
-for i in y:
-    if i[1] == mn:
-        p.append(i[0])
-print(5)
-print(mn)
-print(p)
+# k1 = [i / 1000 for i in range(9000, 25000, 1)]
+# k2 = [i / 1000 for i in range(-7000, 7000, 1)]
+# k3 = [i / 1000 for i in range(170000, 190000, 1)]
+k11 = [randint(1100, 2500) / 100 for i in range(401)]
+k12 = [randint(-500, 500) / 100 for i in range(401)]
+k13 = [randint(17000, 19000) / 100 for i in range(401)]
+
+for i in range(500):
+
+
+
+    hlp = []
+    for i in combinations_with_replacement([i for i in range(400)], 3):
+        b = []
+        i0 = i[0]
+        i1 = i[1]
+        i2 = i[2]
+        b.append(k11[i0])
+        b.append(k12[i1])
+        b.append(k13[i2])
+        hlp.append(b)
+    x = np.array(hlp)
+    y = func(x)
+    p = []
+    a = []
+    for i in y:
+        a.append(i[1])
+    mn = min(a)
+    for i in y:
+        if i[1] == mn:
+            p.append(i[0])
+    print("")
+    print("-------------------------------------------------------------------------------")
+    print("")
+    print("=======", mn)
+    print("")
+    print(p)
+    alf = []
+    alf.append(mn)
+    alf.append(p)
+    big.append(alf)
+a1 = []
+for i in big:
+    a1.append(i[0])
+a1 = min(a1)
+o1 = []
+for i in big:
+    if i[0] == a1:
+        o1.append(i[1])
+print(o1)

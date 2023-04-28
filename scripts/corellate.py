@@ -11,11 +11,11 @@ inpt = os.listdir("D:\github\sd-gender-recognizer\d_backend\Material for tests\o
 audio_dt_name = inpt
 st = ""
 k = 0
-for i in range(22):
-    if k < 15:
-        colr = "--g"
+for i in os.listdir("D:\github\sd-gender-recognizer\d_backend\Material_for_tests\others\_test1"):
+    if i[:1]=="m":
+        colr = "b"
     else:
-        colr = ":m"
+        colr = ":r"
     k += 1
     st += f"[i for i in range(len(mfccsdf[{i}]))], mfccsdf[{i}], '{colr}', "
 print(st)
@@ -31,9 +31,6 @@ for i, audio_data in enumerate(audio_dt_name):
     mfccs = librosa.feature.mfcc(y=y_harmonic, sr=sr, n_mfcc=13)
     X = librosa.stft(y)
     Xdb = librosa.amplitude_to_db(abs(X))
-    cent = librosa.feature.spectral_centroid(y=y, sr=sr)
-    contrast = librosa.feature.spectral_contrast(y=y_harmonic, sr=sr)
-    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     zero_crossing = []
     shag = 500
     zero_count = len(y) // shag
@@ -88,10 +85,10 @@ df1 = df
 #          ':m', [i for i in range(len(mfccsdf[20]))], mfccsdf[20], ':m',[i for i in range(len(mfccsdf[21]))], mfccsdf[21], ':m')
 
 
-plt.figure(figsize=(12, 10), dpi=80)
-sns.heatmap(df1.corr(), xticklabels=df1.corr().columns, yticklabels=df1.corr().columns, cmap='RdYlGn', center=0,
-            annot=True)
-plt.title('Correlogram', fontsize=22)
-plt.xticks(fontsize=12)
-plt.yticks(fontsize=12)
+# plt.figure(figsize=(12, 10), dpi=80)
+# sns.heatmap(df1.corr(), xticklabels=df1.corr().columns, yticklabels=df1.corr().columns, cmap='RdYlGn', center=0,
+#             annot=True)
+# plt.title('Correlogram', fontsize=22)
+# plt.xticks(fontsize=12)
+# plt.yticks(fontsize=12)
 plt.show()
