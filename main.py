@@ -75,7 +75,7 @@ class MainRecognizerWindow(QMainWindow):
                 if p_res[0].lower() == self.file_ch_res[i][self.file_ch_res[i].rfind("/") + 1]:
                     res[i] = p_res + self.file_ch_res[i] + "\n"
                 else:
-                    res[i] = p_res + "(err) - " + self.file_ch_res[i] + "\n"
+                    res[i] = p_res + self.file_ch_res[i] + "\n"
 
                 print(str(i + 1) + "/" + str(n))
 
